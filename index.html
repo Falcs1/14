@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ff69b4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .question-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #ff1493;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .gif-container img {
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #yesBtn {
+            background: #ff1493;
+            color: white;
+        }
+
+        #yesBtn:hover {
+            background: #ff69b4;
+            transform: scale(1.1);
+        }
+
+        .yes-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .hearts {
+            font-size: 3em;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .yay-text {
+            font-size: 4em;
+            color: #ff1493;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(255, 255, 255, 0.7);
+        }
+
+        #continueBtn {
+            background: #ff69b4;
+            color: white;
+        }
+
+        #continueBtn:hover {
+            background: #ff1493;
+            transform: scale(1.1);
+        }
+
+        .scratch-screen {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #ffe4e1 0%, #ffc0cb 100%);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .scratch-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .scratch-header h2 {
+            color: #ff1493;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .scratch-header p {
+            color: #ff69b4;
+            font-size: 1.3em;
+        }
+
+        .scratch-container {
+            position: relative;
+            max-width: 800px;
+            width: 90%;
+            height: 70vh;
+            min-height: 500px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .scratch-reveal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fff5f7 0%, #ffe4e8 100%);
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .reveal-content {
+            text-align: left;
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .reveal-content .note {
+            font-size: 1em;
+            color: #ff1493;
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            text-align: left;
+        }
+
+        #scratchCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><circle cx="16" cy="16" r="10" fill="rgba(255,255,255,0.5)" stroke="gray" stroke-width="2"/></svg>') 16 16, auto;
+            transition: opacity 0.5s;
+        }
+
+        #scratchCanvas.hidden {
+            pointer-events: none;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Question Screen -->
+        <div class="question-screen" id="questionScreen">
+            <h1>Will You Be My Valentine? 💕</h1>
+            <div class="gif-container">
+                <img src="extrafiles/683a43a11a8b31a71694544b4226d069.gif" alt="Valentine">
+            </div>
+            <div class="buttons">
+                <button id="yesBtn">Yes! 💖</button>
+            </div>
+        </div>
+
+        <!-- Yes Screen -->
+        <div class="yes-screen" id="yesScreen">
+            <div class="hearts">💕 💖 💗 💓 💝 💕 💖</div>
+            <div class="yay-text">YAYYYYYYYYYYYYYYYYYYYYY</div>
+            <div class="gif-container">
+                <img src="extrafiles/img2.gif" alt="Celebration">
+            </div>
+            <div class="hearts">💕 💖 💗 💓 💝 💕 💖</div>
+            <button id="continueBtn">Continue 💕</button>
+        </div>
+    </div>
+
+    <!-- Scratch Screen -->
+    <div class="scratch-screen" id="scratchScreen">
+        <div class="scratch-header">
+            <h2>I Have a Surprise for You!</h2>
+            <p>Scratch to reveal your gift...</p>
+        </div>
+        <div class="scratch-container">
+            <div class="scratch-reveal">
+                <div class="reveal-content">
+                    <div class="note" id="noteText">
+                        MY BEAUTIFUL WIFEYYYYY HAPPY VALENTINES DAYYYY 🌹💍✨<br><br>
+                        
+                        First of all... WOW. I'm just sitting here staring at my phone thinking about how crazy it is that out of everyone in this whole world, I actually got YOU. Like, how am I this lucky?? 😭<br><br>
+                        
+                        I know we're far apart right now and the distance is honestly okiiii, but I need you to know that my heart is literally wherever you are 24/7 😼<br><br>
+                        
+                        Every single moment we spend together even if it's just falling asleep on call or yapping about our day is like my favorite part of existing. It's not even just the big stuff, it's the way you make me feel like I'm home whenever I hear your voice. I swear you have this magic vibe where you make everything feel peaceful and perfect just by being there. I love every single laugh, every late-night talk, and even the quiet moments where we're just vibing together because honestly? Life is just better with you in it.<br><br>
+                        
+                        I'm not even lying I say you're the most incredible woman I've ever met. You're smart, you're gorgeous, you're kind, and you actually get me in a way nobody else ever has. You're my best friend and my queen all in one. Thank you for choosing me and for staying down with me even with all these miles between us. I promise you it's all gonna be worth it because I'm never letting you go. You're my forever, my soulmate, and my whole world.<br><br>
+                        
+                        You deserve all the flowers and all the love today and every day because you're actually the goat and I'm so proud to call you mine. I'm counting down every second until there's zero distance and I can finally show you how much I love you in person. Until then, just know I'm obsessed with you and I'm always gonna be your #1 fan.<br><br>
+                        
+                        I love you more than anything in this universe 🤍💛🩶🧡🖤🩷💜🩷🩵❤️🩶💜🧡🩵<br><br>
+                        
+                        HAPPY VALENTINES DAY MY PRECIOUS WIFEYYYYY 🎉🎉🎉🥳🥳🥳❤️❤️❤️❤️❤️❤️❤️❤️
+                    </div>
+                </div>
+            </div>
+            <canvas id="scratchCanvas"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const questionScreen = document.getElementById('questionScreen');
+        const yesScreen = document.getElementById('yesScreen');
+        const continueBtn = document.getElementById('continueBtn');
+        const scratchScreen = document.getElementById('scratchScreen');
+        const scratchCanvas = document.getElementById('scratchCanvas');
+
+        // Yes button
+        yesBtn.addEventListener('click', () => {
+            questionScreen.style.display = 'none';
+            yesScreen.style.display = 'flex';
+        });
+
+        // Continue to scratch screen
+        continueBtn.addEventListener('click', () => {
+            document.querySelector('.container').style.display = 'none';
+            scratchScreen.style.display = 'flex';
+            initScratchCard();
+        });
+
+        // Scratch card logic
+        function initScratchCard() {
+            const container = scratchCanvas.parentElement;
+            
+            // Set canvas size with timeout to ensure container is rendered
+            setTimeout(() => {
+                scratchCanvas.width = container.offsetWidth;
+                scratchCanvas.height = container.offsetHeight;
+
+                const ctx = scratchCanvas.getContext('2d');
+
+                // Create silver scratch-off layer
+                const gradient = ctx.createLinearGradient(0, 0, scratchCanvas.width, scratchCanvas.height);
+                gradient.addColorStop(0, '#c0c0c0');
+                gradient.addColorStop(0.5, '#e8e8e8');
+                gradient.addColorStop(1, '#a8a8a8');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+
+                // Add text on scratch layer
+                ctx.fillStyle = '#666';
+                ctx.font = 'bold 30px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Scratch Here', scratchCanvas.width / 2, scratchCanvas.height / 2);
+
+                let isScratching = false;
+                let lastX = 0;
+                let lastY = 0;
+                let scratchedPixels = 0;
+
+                function checkScratchProgress() {
+                    const imageData = ctx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height);
+                    let transparentPixels = 0;
+                    
+                    for (let i = 3; i < imageData.data.length; i += 4) {
+                        if (imageData.data[i] < 128) {
+                            transparentPixels++;
+                        }
+                    }
+                    
+                    const totalPixels = scratchCanvas.width * scratchCanvas.height;
+                    const scratchedPercentage = (transparentPixels / totalPixels) * 100;
+                    
+                    if (scratchedPercentage > 70) {
+                        scratchCanvas.classList.add('hidden');
+                    }
+                }
+
+                function scratch(x, y) {
+                    ctx.globalCompositeOperation = 'destination-out';
+                    ctx.beginPath();
+                    ctx.arc(x, y, 30, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Draw line for smooth scratching
+                    if (lastX && lastY) {
+                        ctx.lineWidth = 60;
+                        ctx.lineCap = 'round';
+                        ctx.beginPath();
+                        ctx.moveTo(lastX, lastY);
+                        ctx.lineTo(x, y);
+                        ctx.stroke();
+                    }
+
+                    lastX = x;
+                    lastY = y;
+                    
+                    scratchedPixels++;
+                    if (scratchedPixels % 10 === 0) {
+                        checkScratchProgress();
+                    }
+                }
+
+                function getPosition(e) {
+                    const rect = scratchCanvas.getBoundingClientRect();
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                    return {
+                        x: clientX - rect.left,
+                        y: clientY - rect.top
+                    };
+                }
+
+                // Mouse events
+                scratchCanvas.addEventListener('mousedown', (e) => {
+                    isScratching = true;
+                    const pos = getPosition(e);
+                    scratch(pos.x, pos.y);
+                });
+
+                scratchCanvas.addEventListener('mousemove', (e) => {
+                    if (isScratching) {
+                        const pos = getPosition(e);
+                        scratch(pos.x, pos.y);
+                    }
+                });
+
+                scratchCanvas.addEventListener('mouseup', () => {
+                    isScratching = false;
+                    lastX = 0;
+                    lastY = 0;
+                });
+
+                scratchCanvas.addEventListener('mouseleave', () => {
+                    isScratching = false;
+                    lastX = 0;
+                    lastY = 0;
+                });
+
+                // Touch events for mobile
+                scratchCanvas.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    isScratching = true;
+                    const pos = getPosition(e);
+                    scratch(pos.x, pos.y);
+                });
+
+                scratchCanvas.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    if (isScratching) {
+                        const pos = getPosition(e);
+                        scratch(pos.x, pos.y);
+                    }
+                });
+
+                scratchCanvas.addEventListener('touchend', () => {
+                    isScratching = false;
+                    lastX = 0;
+                    lastY = 0;
+                });
+            }, 100);
+        }
+    </script>
+</body>
+</html>
